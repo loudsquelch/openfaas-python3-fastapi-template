@@ -116,3 +116,6 @@ def handle_request(
     return handler.handle(req)
 
 
+@app.get("/swagger.json", include_in_schema=False)
+async def swagger_json():
+    return app.openapi()
