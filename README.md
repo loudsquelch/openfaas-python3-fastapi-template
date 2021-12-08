@@ -5,6 +5,10 @@ A Python [FastAPI](https://github.com/tiangolo/fastapi) template that make use o
 Templates available in this repository:
 - python3-fastapi
 
+**With a function created from this template:**
+
+- An HTTP POST will execute the function (as usual)
+- An HTTP GET will render a SwaggerUI page that tells you how to use the function (response/request schemas are generated from the pydantic models and constants the user defines in their function handler)
 
 ## Downloading the templates
 ```
