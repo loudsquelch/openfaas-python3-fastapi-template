@@ -3,6 +3,17 @@ from fastapi import HTTPException
 from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import Dict, List
+from os import environ
+import glob
+
+# reads in secrets to environment variables, such that they can be 
+# easily used with environ["SECRET_NAME"]
+def readSecretToEnv(secretpath):
+    secretname = secretpath.split('/')[-1]
+    with open(secretpath, "r") as f:
+        environ[secretname] = f.read()
+for secret in glob.glob("/var/openfaas/secrets/*"):
+    readSecretToEnv(secret)
 
 router = APIRouter()
 

@@ -1,18 +1,19 @@
 # author: Justin Guese, 11.3.22, justin@datafortress.cloud
 from os import environ
 import glob
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.openapi.docs import get_swagger_ui_html
 from function.handler import router
-
-# reads in secrets to environment variables, such that they can be 
-# easily used with environ["SECRET_NAME"]
-def readSecretToEnv(secretpath):
-    secretname = secretpath.split('/')[-1]
-    with open(secretpath, "r") as f:
-        environ[secretname] = f.read()
-        
-for secret in glob.glob("/var/openfaas/secrets/*"):
-    readSecretToEnv(secret)
 
 app = FastAPI()
 app.include_router(router)
+
+# required to render /docs path
+@app.get("/docs", include_in_schema=False)
+async def custom_swagger_ui_html(req: Request):
+    root_path = req.scope.get("root_path", "").rstrip("/")
+    openapi_url = root_path + app.openapi_url
+    return get_swagger_ui_html(
+        openapi_url=openapi_url,
+        title="API",
+    )
