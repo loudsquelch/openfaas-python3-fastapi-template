@@ -8,7 +8,7 @@ ARG ADDITIONAL_PACKAGE
 RUN apt update && apt install -y musl-dev gcc make ${ADDITIONAL_PACKAGE}
 
 # Add non root user
-RUN addgroup -S app && adduser app -S -G app
+RUN useradd -ms /bin/bash app
 RUN chown app /home/app
 
 USER app
