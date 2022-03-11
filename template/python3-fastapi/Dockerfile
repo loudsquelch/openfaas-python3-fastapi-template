@@ -1,5 +1,5 @@
-FROM openfaas/of-watchdog:0.7.2 as watchdog
-FROM python:3.7-alpine3.12
+FROM openfaas/of-watchdog:0.8.2 as watchdog
+FROM python:3.10-alpine
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 RUN chmod +x /usr/bin/fwatchdog
@@ -32,11 +32,13 @@ RUN pip install --user -r requirements.txt
 WORKDIR /home/app/
 
 USER root
+# remove build dependencies
+RUN apk del musl-dev gcc make
 COPY function function
 RUN chown -R app:app ./
 USER app
 
-ENV fprocess="uvicorn index:app --host 0.0.0.0 --port 8000"
+ENV fprocess="uvicorn index:app --workers 1 --host 0.0.0.0 --port 8000"
 
 ENV cgi_headers="true"
 ENV mode="http"
