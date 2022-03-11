@@ -16,6 +16,9 @@ $ faas template pull https://github.com/loudsquelch/openfaas-python3-fastapi-tem
 ```
 
 ## Using the python3-fastapi templates
+
+Two versions are available, the python3-fastapi which is built on the python3-alpine image, and the python3-fastapi-debian, which is built on top of the python3-slim package. Some python packages can't be installed using pip (pandas, numpy, etc), if you experience this issue just switch to the python3-fastapi-debian function.
+
 Create a new function
 
 ```
